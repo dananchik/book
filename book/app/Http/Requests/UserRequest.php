@@ -24,11 +24,19 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'avatar'=> 'required|image|file|dimensions:min_width=100,min_height=200'
+            'name'=> 'required|min:6',
+            'avatar'=> 'required|image|file|dimensions:min_width=100,min_height=100',
+            'group'=>'required'
         ];
     }
     public function messages()
     {
-        return ['avatar.image'=>'не отправил лох!'];
+        return [
+            'avatar.image'=>'Вы отправили не картинку',
+            'avatar.required' => 'отправить аватарку обязательно!',
+            'name.required'=> 'Имя не введено',
+            'name.min' => 'Минимальная длина имени 6 символов',
+            'group.required'=>'Вы не выбрали группу пользователя'
+            ];
     }
 }

@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-
+@include('includes.menu')
 @section('content')
     <form method="post" action="{{ route('newGroupSubmit') }}">
         {{ csrf_field() }}

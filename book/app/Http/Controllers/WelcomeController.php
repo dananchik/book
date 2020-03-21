@@ -14,9 +14,8 @@ class WelcomeController extends Controller
         $req->input('login');
         $hashedPassword = Hash::make($req->input('password'));
         if (Hash::check('11111111', $hashedPassword))  {
-            print_r($hashedPassword);
+            $this->authorize();
         }
-        $req->session()->put('auth',true);
         return redirect()->route('users');
 
     }

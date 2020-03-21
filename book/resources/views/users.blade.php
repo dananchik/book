@@ -1,20 +1,24 @@
 @extends('layouts.layout')
 @section('title')users @endsection
-@section('css')usersTable.css @endsection
+@section('css')
+    <link rel="stylesheet" href="/css/usersTable.css"> @endsection
+@include('includes.menu')
 @section('content')
     <table>
         <tr>
-            <th colspan="2">name</th>
-            <th>group</th>
+            <th>id</th>
+            <th>name</th>
             <th>avatar</th>
-            <th>Действия</th>
+            <th>groupId</th>
+            <th>действия</th>
         </tr>
         @foreach($data as $el)
             <tr>
-                <td>{{ $el->name }}</td>
+                <td>{{ $el->id }}</td>
+                <td><a href="{{route('editUserForm', $el->id)}}">{{ $el->name }}</a></td>
+                <td><img src="{{ asset("storage/$el->avatar") }}"></td>
                 <td>{{ $el->groupId }}</td>
-                <td><img src="{{ asset("storage/$el->avatar") }}" alt="xd"></td>
-                <td><a href="#">редактировать</a></td>
+                <td><a href="{{ route('deleteUser',$el->id) }}">удалить</a></td>
             </tr>
         @endforeach
     </table>

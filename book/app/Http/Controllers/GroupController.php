@@ -4,37 +4,59 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GroupRequest;
 use App\models\Group;
-use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function showGroups()
     {
         return view('groups');
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function newGroupForm()
     {
         return view('new_group');
     }
 
+    /**
+     * @param GroupRequest $req
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function newGroupSubmit(GroupRequest $req)
     {
         $group = new Group();
-        print_r($req->input('group'));
         $group->group = $req->input('group');
-        print_r($group);
         $group->save();
+        return redirect()->route('showGroups');
     }
 
-    public function editGroupForm()
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function editGroupForm($id)
     {
-        return view('group_edit');
+        $group = Group::findOrFail($id);
+        return view('group_edit', ['data' => $group]);
     }
 
-    public function editGroupSubmit()
+    /**
+     * @param $id
+     * @param GroupRequest $req
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function editGroupSubmit($id, GroupRequest $req)
     {
 
+        $group = Group::findOrFail($id);
+        $group->group = $req->input('group');
+        $group->save();
+        return redirect()->route('showGroups');
     }
 
 }

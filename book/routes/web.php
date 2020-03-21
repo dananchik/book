@@ -35,6 +35,9 @@ Route::get('/users/{id}/edit',
 Route::post('/users/{id}/edit',
     'UserController@editUserSubmit')
     ->name('editUserSubmit');
+Route::get('/users/{id}/delete',
+    'UserController@deleteUser')
+    ->name('deleteUser');
 Route::get('/groups/{id}/edit',
     'GroupController@editGroupForm')
     ->name('editGroupForm');
@@ -50,3 +53,5 @@ Route::post('/groups/newGroup',
 Route::get('/groups',
     'GroupController@showGroups')
     ->name('showGroups');
+
+

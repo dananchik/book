@@ -1,6 +1,7 @@
 table {
     background: #f5e8d0; /* Цвет фона таблицы */
     border-spacing: 0; /* Расстояние между ячеек */
+    margin-top: 10vh;
 }
 th {
     background: #496791; /* Цвет фона ячеек */
@@ -11,6 +12,6 @@ td, th {
 }
 
 img{
-    width: 400px;
-    height: 400px;
+    width: 50px;
+    height: 50px;
 }

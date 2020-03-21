@@ -3,58 +3,75 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
-use Illuminate\Http\Request;
 use App\models\User;
 use App\models\Group;
-use Mockery\Exception;
 
 class UserController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getUsers()
     {
         $data = User::all();
-        return view('users', ['data' => $data]);
+        return view('users',
+            ['data' => $data]);
     }
 
     public function UserForm()
     {
-        return view('new_user', ['data' => Group::all()]);
+        return view('new_user',
+            ['data' => Group::all()]);
     }
 
+    /**
+     * @param UserRequest $req
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function newUser(UserRequest $req)
     {
         $user = new User();
         $user->name = $req->input('name');
         $user->groupId = $req->input('group');
-        $path = $req->file('avatar')->store('upload_avatars','public');
-        print_r($path);
+        $path = $req->file('avatar')
+            ->store('upload_avatars','public');
         $user->avatar = $path;
         $user->save();
-        return redirect()->route('users')->with('success','запись добавлена');
+        return redirect()
+            ->route('users')
+            ->with('success','запись добавлена');
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function editUserForm($id)
     {
-        try {
-            $user = User::find($id);
-            $groupName = Group::find($user->groupId)->group;
-            return view('edit_user', ['data' => User::find($id), 'groupName' => $groupName, 'groups' => Group::all()]);
-        } catch (Exception $e) {
-            print_r('ошибка');
-        }
-
+            $user = User::findOrFail($id);
+            $groupName = Group::findOrFail($user->groupId)->group;
+            return view('edit_user',
+                ['data' => User::findOrFail($id),
+                    'groupName' => $groupName,
+                    'groups' => Group::all()]);
     }
 
+    /**
+     * @param $id
+     * @param UserRequest $req
+     */
     public function editUserSubmit($id, UserRequest $req)
     {
-        $user = User::find($id);;
-
+        $user = User::findOrFail($id);;
         $user->name = $req->input('name');
         $user->groupId = $req->input('group');
-        $path = $req->file('avatar')->store('upload_avatars','public');
-
+        $path = $req->file('avatar')
+            ->store('upload_avatars','public');
         $user->avatar = $path;
-        print_r($user);
         $user->save();
+    }
+    public function deleteUser($id){
+        User::findOrFail($id)->delete();
+        return redirect()->route('users');
     }
 }
