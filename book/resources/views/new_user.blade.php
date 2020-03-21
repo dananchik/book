@@ -5,11 +5,15 @@
         {{ csrf_field() }}
         <input type="text" name="name">
         <select name="group">
-            <option>admin</option>
-            <option>user</option>
+            @foreach($data as $group)
+                <option value="{{ $group->id }}">{{ $group->group }}</option>
+            @endforeach
         </select>
         <input type="file" name="avatar">
         <button type="submit">отправить</button>
+        @foreach($errors->all() as $el)
+            {{ $el }}
+        @endforeach
     </form>
-    <img src="{{ asset('storage/upload_avatars/1.png') }}" alt="">
+
 @endsection
