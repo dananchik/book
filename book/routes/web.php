@@ -14,44 +14,46 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/',
-    'WelcomeController@submitForm')
-    ->name('push-form');
-Route::get('/',
-    'WelcomeController@showForm')
-    ->name('form');
-Route::get('/users',
-    'UserController@getUsers')
-    ->name('users');
-Route::get('users/newUser',
-    'UserController@UserForm')
-    ->name('UserForm');
-Route::post('users/newUser',
-    'UserController@newUser')
-    ->name('newUser');
-Route::get('/users/{id}/edit',
-    'UserController@editUserForm')
-    ->name('editUserForm');
-Route::post('/users/{id}/edit',
-    'UserController@editUserSubmit')
-    ->name('editUserSubmit');
-Route::get('/users/{id}/delete',
-    'UserController@deleteUser')
-    ->name('deleteUser');
-Route::get('/groups/{id}/edit',
-    'GroupController@editGroupForm')
-    ->name('editGroupForm');
-Route::post('/groups/{id}/edit',
-    'GroupController@editGroupSubmit')
-    ->name('editGroupSubmit');
-Route::get('/groups/newGroup',
-    'GroupController@newGroupForm')
-    ->name('newGroupForm');
-Route::post('/groups/newGroup',
-    'GroupController@newGroupSubmit')
-    ->name('newGroupSubmit');
-Route::get('/groups',
-    'GroupController@showGroups')
-    ->name('showGroups');
+
+
+Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('/', 'Auth\LoginController@login')->name('post-login');
+Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/users',
+        'UserController@getUsers')
+        ->name('users');
+    Route::get('users/newUser',
+        'UserController@UserForm')
+        ->name('UserForm');
+    Route::post('users/newUser',
+        'UserController@newUser')
+        ->name('newUser');
+    Route::get('/users/{id}/edit',
+        'UserController@editUserForm')
+        ->name('editUserForm');
+    Route::post('/users/{id}/edit',
+        'UserController@editUserSubmit')
+        ->name('editUserSubmit');
+    Route::get('/users/{id}/delete',
+        'UserController@deleteUser')
+        ->name('deleteUser');
+    Route::get('/groups/{id}/edit',
+        'GroupController@editGroupForm')
+        ->name('editGroupForm');
+    Route::post('/groups/{id}/edit',
+        'GroupController@editGroupSubmit')
+        ->name('editGroupSubmit');
+    Route::get('/groups/newGroup',
+        'GroupController@newGroupForm')
+        ->name('newGroupForm');
+    Route::post('/groups/newGroup',
+        'GroupController@newGroupSubmit')
+        ->name('newGroupSubmit');
+    Route::get('/groups',
+        'GroupController@showGroups')
+        ->name('showGroups');
+});
+
 
 
