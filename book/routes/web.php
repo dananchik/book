@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
 Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('/', 'Auth\LoginController@login')->name('post-login');
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
@@ -50,6 +49,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/groups/newGroup',
         'GroupController@newGroupSubmit')
         ->name('newGroupSubmit');
+    Route::get('/groups/{id}/delete',
+        'GroupController@deleteGroup')
+        ->name('deleteGroup');
     Route::get('/groups',
         'GroupController@showGroups')
         ->name('showGroups');

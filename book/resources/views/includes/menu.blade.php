@@ -4,6 +4,7 @@
             <li><a href="{{ route('newUser') }}"> добавить пользователя</a></li>
             <li><a href="{{ route('newGroupForm') }}"> добавить группу пользователей</a></li>
             <li><a href="{{ route('users') }}">список пользователей</a></li>
+            <li><a href="{{ route('showGroups') }}">список групп</a></li>
             <li><a href="{{ route('logout') }}">выйти</a></li>
         </ul>
     </nav>

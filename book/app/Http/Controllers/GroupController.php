@@ -12,7 +12,8 @@ class GroupController extends Controller
      */
     public function showGroups()
     {
-        return view('groups');
+        $data = Group::all();
+        return view('groups', ['data' => $data]);
     }
 
     /**
@@ -32,7 +33,9 @@ class GroupController extends Controller
         $group = new Group();
         $group->group = $req->input('group');
         $group->save();
-        return redirect()->route('showGroups');
+        return redirect()
+            ->route('showGroups')
+            ->with('success', 'группа добавлена');
     }
 
     /**
@@ -56,7 +59,17 @@ class GroupController extends Controller
         $group = Group::findOrFail($id);
         $group->group = $req->input('group');
         $group->save();
-        return redirect()->route('showGroups');
+        return redirect()
+            ->route('showGroups')
+            ->with('success', 'группа отредактирована');
+    }
+
+    public function deleteGroup($id)
+    {
+        Group::findOrFail($id)->delete();
+        return redirect()
+            ->route('showGroups')
+            ->with('success', 'группа удалена');
     }
 
 }

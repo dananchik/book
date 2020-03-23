@@ -14,11 +14,6 @@
         </select>
         <input type="file" name="avatar">
         <button type="submit">отправить</button>
-        <ul class="errors">
-            @foreach($errors->all() as $el)
-                <li>{{ $el }}</li>
-            @endforeach
-        </ul>
     </form>
 
 @endsection

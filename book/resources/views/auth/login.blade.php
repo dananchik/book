@@ -1,56 +1,46 @@
 @extends('layouts.layout')
-
+@section('css')
+    <link rel="stylesheet" href="/css/Form.css"> @endsection
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Авторизация</div>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
+    <form method="POST" class="reg-form" action="{{ route('login') }}">
+        @csrf
+        <h2>Вход</h2>
+        <img src="/img/avatar.svg" alt="">
+        <div class="item-form"><label for="login" class="label-input">{{ __('Login') }}</label>
+            <input id="login" class="input-form" name="login" value="{{ old('login') }}" required
+                   autofocus>
 
-                        <div class="form-group row">
-                            <label for="login" class="col-sm-4 col-form-label text-md-right">{{ __('Login') }}</label>
 
-                            <div class="col-md-6">
-                                <input id="login" class="form-control{{ $errors->has('login') ? ' is-invalid' : '' }}" name="login" value="{{ old('login') }}" required autofocus>
+        </div>
+        <div class="container">
+            @if ($errors->has('login'))
+                <span class="invalid-feedback">
+                    <strong>{{ $errors->first('login') }}</strong>
+                </span>
+            @endif
 
-                                @if ($errors->has('login'))
-                                    <span class="invalid-feedback">
-            <strong>{{ $errors->first('login') }}</strong>
-        </span>
-                                @endif
-                            </div>
-                        </div>
+            <div class="item-form">
+                <label for="password" class="label-input">{{ __('Password') }}</label>
 
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+                <input id="password" type="password" class="input-form" name="password" required
+                       autocomplete="current-password">
 
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                @error('password')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
 
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
+            <div class="form-group row mb-0">
+                <div class="col-md-8 offset-md-4">
+                    <button type="submit" class="btn btn-primary">
+                        отправить
+                    </button>
 
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
+    </form>
     </div>
-</div>
 @endsection

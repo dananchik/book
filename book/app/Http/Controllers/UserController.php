@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\models\User;
 use App\models\Group;
@@ -34,12 +35,12 @@ class UserController extends Controller
         $user->name = $req->input('name');
         $user->groupId = $req->input('group');
         $path = $req->file('avatar')
-            ->store('upload_avatars','public');
+            ->store('upload_avatars', 'public');
         $user->avatar = $path;
         $user->save();
         return redirect()
             ->route('users')
-            ->with('success','запись добавлена');
+            ->with('success', 'Пользователь добавлен!');
     }
 
     /**
@@ -48,30 +49,45 @@ class UserController extends Controller
      */
     public function editUserForm($id)
     {
-            $user = User::findOrFail($id);
-            $groupName = Group::findOrFail($user->groupId)->group;
-            return view('edit_user',
-                ['data' => User::findOrFail($id),
-                    'groupName' => $groupName,
-                    'groups' => Group::all()]);
+        $user = User::findOrFail($id);
+        $groupName = Group::findOrFail($user->groupId)->group;
+        return view('edit_user',
+            ['data' => User::findOrFail($id),
+                'groupName' => $groupName,
+                'groups' => Group::all()]);
     }
 
     /**
      * @param $id
      * @param UserRequest $req
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function editUserSubmit($id, UserRequest $req)
+    public function editUserSubmit($id, Request $req)
     {
+        $validation = $req->validate([
+            'name' => 'required|min:6',
+            'avatar' => 'image|file',
+            'group' => 'required'
+        ]);
         $user = User::findOrFail($id);;
         $user->name = $req->input('name');
         $user->groupId = $req->input('group');
-        $path = $req->file('avatar')
-            ->store('upload_avatars','public');
-        $user->avatar = $path;
+        if (!$req->file('avatar') == null) {
+            $path = $req->file('avatar')
+                ->store('upload_avatars', 'public');
+            $user->avatar = $path;
+        }
         $user->save();
+        return redirect()
+            ->route('users')
+            ->with('success', 'Пользователь отредактирован');
     }
-    public function deleteUser($id){
+
+    public function deleteUser($id)
+    {
         User::findOrFail($id)->delete();
-        return redirect()->route('users');
+        return redirect()
+            ->route('users')
+            ->with('success', 'Пользователь удален!');
     }
 }

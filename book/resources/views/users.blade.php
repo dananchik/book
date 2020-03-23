@@ -3,6 +3,7 @@
 @section('css')
     <link rel="stylesheet" href="/css/usersTable.css"> @endsection
 @include('includes.menu')
+@include('includes.msgs')
 @section('content')
     <table>
         <tr>
